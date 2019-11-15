@@ -21,9 +21,9 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+$app->withFacades();
 
-// $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -56,14 +56,21 @@ $app->singleton(
 | route or middleware that'll be assigned to some specific routes.
 |
 */
+/**
+ * Register middlewares
+ */
+$middlewares = require __DIR__.'/../app/config/middlewares.php';
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
-
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+foreach($middlewares as $name => $middleware) {
+    if($name == 'global') {
+        $app->middleware($middleware);
+    }
+    else {
+        $app->routeMiddleware([
+            $name => $middleware,
+        ]);
+    }
+}
 
 /*
 |--------------------------------------------------------------------------
