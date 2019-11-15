@@ -57,15 +57,19 @@ $app->singleton(
 |
 */
 /**
- * Register middlewares
+ * Register middlewares using the middleware configuration file
  */
 $middlewares = require __DIR__.'/../app/config/middlewares.php';
 
+// Iterate through the middleware configuration
 foreach($middlewares as $name => $middleware) {
-    if($name == 'global') {
+    // Check for global middlewares
+    if($name === 'global') {
+        // Register all global middlewares
         $app->middleware($middleware);
     }
     else {
+        // Register each route middleware
         $app->routeMiddleware([
             $name => $middleware,
         ]);
