@@ -33,12 +33,18 @@ class BotMiddleware
         try {
             // Get the type of request
             $type = $request->input('type', FALSE);
+            $subtype = $request->input('event.subtype', FALSE);
             if($type === 'event_callback') {
                 $type = $request->input('event.type', FALSE);
             }
             // Make sure type has value
             if($type === FALSE) {
                 throw new AuthSlackException('Invalid Request');
+            }
+            // Allow only events without subtype
+            if($subtype) {
+                return response(json_encode(["ok" => true]), 200)
+                    ->header('X-Slack-No-Retry', 1);
             }
             /**
              * Using factory design pattern,
