@@ -20,21 +20,19 @@ class AppMentionService extends AuthenticateSlack implements AuthenticateSlackIn
     
     public function auth()
     {
-        // Disable verification for the moment
-        return TRUE;
         // Get the slack signature to be compared against
         $slackSignature = $this->request->header('X-Slack-Signature', FALSE);
+        // Get the ingredients
+        $version = 'v0';
+        $timestamp = $this->request->header('X-Slack-Request-Timestamp', null);
+        $signingSecret = getenv('SIGN_SECRET');
+        // Raw request body
+        $body = file_get_contents("php://input");
 
         // Make sure it is not empty
         if($slackSignature === FALSE) {
             return FALSE;
         }
-
-        // Get the ingredients
-        $version = 'v0';
-        $timestamp = $this->request->header('X-Slack-Request-Timestamp', null);
-        $signingSecret = getenv('SIGN_SECRET');
-        $body = http_build_query($this->request->all());
 
         // Prepare the base string for hashing
         $baseString = implode(':', [$version, $timestamp, $body]);

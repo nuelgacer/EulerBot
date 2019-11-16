@@ -38,7 +38,6 @@ class ViewMiddleware
             'text' => $response->getContent(),
             'channel' => $request->input('event.channel', null)
         ];
-        Log::info('App: '.$response->getContent());
         
         $authorizationBearer = 'Bearer ' . getenv('BOT_TOKEN');
         

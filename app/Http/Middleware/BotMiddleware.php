@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Log;
 use Closure;
+use Request;
 use \App\Services\AuthSlackException;
 
 /**
@@ -25,9 +26,8 @@ class BotMiddleware
      */
     public function handle($request, Closure $next)
     {
-        Log::info('text: '.json_encode($request->all()));
         // Debug Slack API request
-        Log::info('Body: '.http_build_query($request->all()));
+        Log::info('Body: '.file_get_contents("php://input"));
         Log::info('X-Slack-Signature: ' . $request->header('X-Slack-Signature', FALSE));
         Log::info('X-Slack-Request-Timestamp: ' . $request->header('X-Slack-Request-Timestamp', FALSE));
         try {
