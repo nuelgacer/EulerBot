@@ -36,8 +36,11 @@ class BotMiddleware
              * process different Slack API requests
              */
 
-            // Get the event class name based on the type of request
-            $service = '\\App\\Services\\' . str_replace('_', '', ucwords($type, '_')) . 'Service';
+            /**
+             * Get the event class name based on the type of request
+             * Convert snake_case (and dotted) to PascalCase
+             */
+            $service = '\\App\\Services\\' . str_replace(['_','.'], '', ucwords($type, '_.')) . 'Service';
             // Authenticate request
             if(class_exists($service)) {
                 if(FALSE === ($data = (new $service($request))->auth())) {

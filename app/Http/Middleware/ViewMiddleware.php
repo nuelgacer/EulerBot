@@ -29,10 +29,16 @@ class ViewMiddleware
                 "error" => "Not found"   
             ], 404);
         }
-
-        $content = json_decode($response->getContent(), true);
-        // Do some enveloping to match the requirements of Slack API
-
-        return $response;
+        // Get the returned content
+        $content = $response->getContent();
+        
+        return $response
+            // Do some enveloping to match the requirements of Slack API
+            ->setContent([
+                'text' => $content,
+                'channel' => $request->input('channel', null)
+            ])
+            // Set the headers
+            ->header('Authorization', 'Bearer ' . getenv('BOT_TOKEN'));
     }
 }
