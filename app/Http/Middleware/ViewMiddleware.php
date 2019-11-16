@@ -32,6 +32,7 @@ class ViewMiddleware
             ], 404);
         }
         
+        // Do some enveloping to match the requirements of Slack API
         $content = [
             // Get the returned content
             'text' => $response->getContent(),
@@ -41,18 +42,18 @@ class ViewMiddleware
         
         $authorizationBearer = 'Bearer ' . getenv('BOT_TOKEN');
         
+        // Fire the event to send message to Slack API
         event(new MessageEvent([
+            // Set the content
             'body' => json_encode($content),
+            // Set the headers
             'headers' => [
                 'Authorization' => $authorizationBearer,
                 'Content-Type' => 'application/json'
             ]
         ]));
         
-        return $response
-            // Do some enveloping to match the requirements of Slack API
-            ->setContent($content)
-            // Set the headers
-            ->header('Authorization', $authorizationBearer);
+        // Send 200 response
+        return response()->json(["ok" => true], 200);
     }
 }
