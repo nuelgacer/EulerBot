@@ -32,7 +32,7 @@ class ViewMiddleware
         }
         // Get the returned content
         $content = $response->getContent();
-        Log::info('App: '.content);
+        Log::info('App: '.$content);
         
         return $response
             // Do some enveloping to match the requirements of Slack API
