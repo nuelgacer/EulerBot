@@ -17,7 +17,7 @@ class AppController extends Controller
     public function index(\Illuminate\Http\Request $request)
     {
         try {
-            $number = $request->input('message', null);
+            $number = $request->input('text', null);
 
             if(!is_numeric($number)) {
                 throw new \Exception('Please provide a valid number 0 < X < 10000');
@@ -26,7 +26,7 @@ class AppController extends Controller
 
             // Perform Project Euler Problem 1
             $sum = 0;
-            $i = $number;
+            $i = +$number;
 
             // Loop through the number until it reaches zero
             while($i > 0) {
@@ -37,14 +37,10 @@ class AppController extends Controller
                 }
             }
 
-            return [
-                "message" => sprintf("The sum of all multiples of 3 and 5 below %s is %s,", $number, $sum)
-            ];
+            return sprintf("The sum of all multiples of 3 and 5 below %s is %s.", $number, $sum);
         }
         catch(\Exception $e) {
-            return [
-                'message' => $e->getMessage()
-            ];
+            return $e->getMessage();
         }
     }
 }
