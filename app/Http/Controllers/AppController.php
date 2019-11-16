@@ -2,6 +2,14 @@
 
 namespace App\Http\Controllers;
 
+/**
+ * class AppController
+ * 
+ * Responds according to the request of Slack API
+ * 
+ * @author Emmanuel Gacer <emmanuelqgacer@gmail.com>
+ */
+
 class AppController extends Controller
 {
     /**
@@ -10,59 +18,54 @@ class AppController extends Controller
      * @return void
      */
     public function __construct()
-    {
-        //
-    }
+    {}
 
+    /**
+     * Base resource to process the request from Slack API
+     * 
+     * @param \Illuminate\Http\Request $request Current HTTP Request
+     * @return String The message response to Slack API
+     */
     public function index(\Illuminate\Http\Request $request)
     {
-        try {
-            $authUsers = $request->input('authed_users', []);
-            $text = trim($request->input('event.text', null));
-            $user = '<@' .$request->input('event.user', null) . '>';
-            $type = $request->input('event.type', null);
+        // Athenticated users
+        $authUsers = $request->input('authed_users', []);
+        // The text where number will be extracted
+        $text = trim($request->input('event.text', null));
+        // The sender, prefixed and suffixed
+        $user = '<@' .$request->input('event.user', null) . '>';
 
-            if($type == 'app_mention') {
-                return sprintf("Hi %s! I am ready to answer your question, give me a number?", $user);
-            }
-            $isMentioned = false;
-            foreach($authUsers as $authedUser) {
-                $authedUser = "<@{$authedUser}>";
-                // Check
-                if(!$isMentioned && strpos($text, $authedUser) !== FALSE) {
-                    $isMentioned = true;
-                }
-                $text = str_replace($authedUser, '', $text);
-            }
-            if($type == 'message' && $isMentioned && !strlen(trim($text))) {
-                return response('', 200);
-            }
-            
-            // Make sure number is valid
-            if(!is_numeric($text) || $text <= 0 || $text >= 10000) {
-                throw new \Exception(
-                    sprintf('Hi %s! Please provide a valid number 0 < X < 10000.', $user)
-                );
-            }
-            // Do more validation
-
-            // Perform Project Euler Problem 1
-            $sum = 0;
-            $i = +$text;
-
-            // Loop through the number until it reaches zero
-            while($i > 0) {
-                $i--;
-                // Modulo divide the number by 3 and 5 to check if it is a multiple
-                if($i%3==0 || $i%5==0) {
-                    $sum += $i;
-                }
-            }
-
-            return sprintf("The sum of all multiples of 3 and 5 below %s is %s.", number_format($text), number_format($sum));
+        // Remove all mentioned users to get the number
+        foreach($authUsers as $authedUser) {
+            // Add prefix and suffix based on Slack format
+            $authedUser = "<@{$authedUser}>";
+            // Remove the mentioned user
+            $text = str_replace($authedUser, '', $text);
         }
-        catch(\Exception $e) {
-            return $e->getMessage();
+        
+        // If text is empty, send this message
+        if(!strlen(trim($text))) {
+            return sprintf("Hi %s! I am ready to answer your question, give me a number?", $user);
         }
+        
+        // Make sure number is valid
+        if(!is_numeric($text) || $text <= 0 || $text >= 10000) {
+            return sprintf('Hi %s! Please provide a valid number 0 < X < 10000.', $user);
+        }
+
+        // Perform Project Euler Problem 1
+        $sum = 0;
+        $number = +$text;
+
+        // Loop through the number until it reaches zero
+        while($number > 0) {
+            $number--;
+            // Modulo divide the number by 3 and 5 to check if it is a multiple
+            if($number%3==0 || $number%5==0) {
+                $sum += $number;
+            }
+        }
+
+        return sprintf("The sum of all multiples of 3 and 5 below %s is %s.", number_format($text), number_format($sum));
     }
 }
