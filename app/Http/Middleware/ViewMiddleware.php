@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Log;
 use Closure;
+use App\Events\MessageEvent;
 
 /**
  * Middleware to evelope response
@@ -30,16 +31,25 @@ class ViewMiddleware
                 "error" => "Not found"   
             ], 404);
         }
-        // Get the returned content
-        $content = $response->getContent();
-        Log::info('App: '.$content);
+        
+        $content = [
+            // Get the returned content
+            'text' => $response->getContent(),
+            'channel' => $request->input('event.channel', null)
+        ];
+        Log::info('App: '.$response->getContent());
+        
+        
+        event(new MessageEvent([
+            'content' => $content,
+            'headers' => [
+                'Authorization' => 'Bearer ' . getenv('BOT_TOKEN')
+            ]
+        ]));
         
         return $response
             // Do some enveloping to match the requirements of Slack API
-            ->setContent([
-                'text' => $content,
-                'channel' => $request->input('event.channel', null)
-            ])
+            ->setContent($content)
             // Set the headers
             ->header('Authorization', 'Bearer ' . getenv('BOT_TOKEN'));
     }

@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\ExampleEvent;
+use App\Events\MessageEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class ExampleListener
+class MessageListener
 {
     /**
      * Create the event listener.
@@ -21,11 +21,13 @@ class ExampleListener
     /**
      * Handle the event.
      *
-     * @param  ExampleEvent  $event
+     * @param  MessageEvent  $event
      * @return void
      */
-    public function handle(ExampleEvent $event)
+    public function handle(MessageEvent $event)
     {
-        //
+        $response = $event->getResponse();
+        
+        // var_dump($response);
     }
 }

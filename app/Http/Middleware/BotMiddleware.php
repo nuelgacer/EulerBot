@@ -25,6 +25,7 @@ class BotMiddleware
      */
     public function handle($request, Closure $next)
     {
+        Log::info('URL: '.$request->fullUrl());
         // Debug Slack API request
         Log::info('Body: '.http_build_query($request->all()));
         Log::info('X-Slack-Signature: ' . $request->header('X-Slack-Signature', FALSE));
