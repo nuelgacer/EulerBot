@@ -30,7 +30,7 @@ class MessageListener
 
         $client = new \GuzzleHttp\Client();
         
-        $client->request('POST', 'https://slack.com/api/chat.postMessage', $response);
+        // $client->request('POST', 'https://slack.com/api/chat.postMessage', $response);
         
         // var_dump($response);
     }
