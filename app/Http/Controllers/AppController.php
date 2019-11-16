@@ -16,16 +16,30 @@ class AppController extends Controller
 
     public function index(\Illuminate\Http\Request $request)
     {
+        
         try {
             $auth_users = $request->input('authed_users', []);
             $text = trim($request->input('event.text', null));
+            $user = $request->input('event.user', null);
+            $type = $request->input('event.type', null);
+
+            if($type == 'app_mention') {
+                return sprintf("Hi %s! I am ready to answer your question, give me a number?", $user);
+            }
+
             foreach($auth_users as $user) {
                 $user = "<@{$user}>";
                 $text = str_replace($user, '', $text);
             }
+            
 
-            if(!is_numeric($text)) {
-                throw new \Exception('Please provide a valid number 0 < X < 10000');
+            if(!is_numeric($text) || ($text > 0 && $text < 10000)) {
+                throw new \Exception(
+                    sprintf(
+                        '%sPlease provide a valid number 0 < X < 10000.',
+                        ($user ? "Hi {$user}! " : '')
+                    )
+                );
             }
             // Do more validation
 
