@@ -43,9 +43,7 @@ class BotMiddleware
             }
             // Allow only events without subtype
             if($subtype) {
-                return response(json_encode([
-                        "ok" => true
-                    ]), 200);
+                return response('', 200);
             }
             /**
              * Using factory design pattern,

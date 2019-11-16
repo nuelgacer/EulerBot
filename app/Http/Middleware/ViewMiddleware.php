@@ -54,8 +54,6 @@ class ViewMiddleware
         ]));
         
         // Send 200 response
-        return response(json_encode([
-                "ok" => true
-            ]), 200);
+        return response('', 200);
     }
 }

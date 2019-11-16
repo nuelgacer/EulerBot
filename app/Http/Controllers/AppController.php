@@ -16,7 +16,6 @@ class AppController extends Controller
 
     public function index(\Illuminate\Http\Request $request)
     {
-        
         try {
             $authUsers = $request->input('authed_users', []);
             $text = trim($request->input('event.text', null));
@@ -26,10 +25,17 @@ class AppController extends Controller
             if($type == 'app_mention') {
                 return sprintf("Hi %s! I am ready to answer your question, give me a number?", $user);
             }
-
+            $isMentioned = false;
             foreach($authUsers as $authedUser) {
                 $authedUser = "<@{$authedUser}>";
+                // Check
+                if(!$isMentioned && strpos($text, $authedUser) !== FALSE) {
+                    $isMentioned = true;
+                }
                 $text = str_replace($authedUser, '', $text);
+            }
+            if($type == 'message' && $isMentioned && !strlen(trim($text))) {
+                return response('', 200);
             }
             
             // Make sure number is valid
