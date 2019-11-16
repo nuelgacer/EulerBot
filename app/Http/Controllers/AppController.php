@@ -27,13 +27,13 @@ class AppController extends Controller
                 return sprintf("Hi %s! I am ready to answer your question, give me a number?", $user);
             }
 
-            foreach($authUsers as $autheduser) {
-                $autheduser = "<@{$autheduser}>";
-                $text = str_replace($autheduser, '', $text);
+            foreach($authUsers as $authedUser) {
+                $authedUser = "<@{$authedUser}>";
+                $text = str_replace($authedUser, '', $text);
             }
             
-
-            if(!is_numeric($text) || ($text > 0 && $text < 10000)) {
+            // Make sure number is valid
+            if(!is_numeric($text) || $text <= 0 || $text >= 10000) {
                 throw new \Exception(
                     sprintf('Hi %s! Please provide a valid number 0 < X < 10000.', $user)
                 );
