@@ -18,27 +18,24 @@ class AppController extends Controller
     {
         
         try {
-            $auth_users = $request->input('authed_users', []);
+            $authUsers = $request->input('authed_users', []);
             $text = trim($request->input('event.text', null));
-            $user = $request->input('event.user', null);
+            $user = '<@' .$request->input('event.user', null) . '>';
             $type = $request->input('event.type', null);
 
             if($type == 'app_mention') {
                 return sprintf("Hi %s! I am ready to answer your question, give me a number?", $user);
             }
 
-            foreach($auth_users as $user) {
-                $user = "<@{$user}>";
-                $text = str_replace($user, '', $text);
+            foreach($authUsers as $autheduser) {
+                $autheduser = "<@{$autheduser}>";
+                $text = str_replace($autheduser, '', $text);
             }
             
 
             if(!is_numeric($text) || ($text > 0 && $text < 10000)) {
                 throw new \Exception(
-                    sprintf(
-                        '%sPlease provide a valid number 0 < X < 10000.',
-                        ($user ? "Hi {$user}! " : '')
-                    )
+                    sprintf('Hi %s! Please provide a valid number 0 < X < 10000.', $user)
                 );
             }
             // Do more validation
@@ -56,7 +53,7 @@ class AppController extends Controller
                 }
             }
 
-            return sprintf("The sum of all multiples of 3 and 5 below %s is %s.", $text, $sum);
+            return sprintf("The sum of all multiples of 3 and 5 below %s is %s.", number_format($text), number_format($sum));
         }
         catch(\Exception $e) {
             return $e->getMessage();

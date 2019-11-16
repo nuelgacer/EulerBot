@@ -43,8 +43,9 @@ class BotMiddleware
             }
             // Allow only events without subtype
             if($subtype) {
-                return response(json_encode(["ok" => true]), 200)
-                    ->header('X-Slack-No-Retry', 1);
+                return response(json_encode([
+                        "ok" => true
+                    ]), 200);
             }
             /**
              * Using factory design pattern,
