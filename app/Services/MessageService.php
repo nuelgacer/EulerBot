@@ -3,14 +3,14 @@
 namespace App\Services;
 
 /**
- * class AppMentionService
+ * class MessageService
  * 
  * Verify a Slack API request
  * 
  * @author Emmanuel Gacer <emmanuelqgacer@gmail.com>
  */
 
-class AppMentionService extends AuthenticateSlack implements AuthenticateSlackInterface
+class MessageService extends AuthenticateSlack implements AuthenticateSlackInterface
 {
     /**
      * The current HTTP request
