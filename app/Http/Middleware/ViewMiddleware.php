@@ -54,6 +54,8 @@ class ViewMiddleware
         ]));
         
         // Send 200 response
-        return response()->json(["ok" => true], 200);
+        return response()
+            ->json(["ok" => true], 200)
+            ->header('X-Slack-No-Retry', 1);
     }
 }
