@@ -1,6 +1,8 @@
 <?php
 /**
  * API route configuration
+ * 
+ * @author Emmanuel Gacer <emmanuelqgacer@gmail.com>
  */
 
 return [

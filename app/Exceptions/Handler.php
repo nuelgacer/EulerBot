@@ -46,6 +46,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // Set the response to 404 header when resource is not found
         if($exception instanceof NotFoundHttpException) {
             return response('', 404);
         }

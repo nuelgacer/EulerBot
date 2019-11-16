@@ -15,9 +15,9 @@ use \Illuminate\Http\Request;
 abstract class AuthenticateSlack
 {
     /**
-     * Injects the current request to authentication class
+     * Injects the current request to authentication clas
      * 
-     * @var Request $request The current HTTP Request
+     * @param \Illuminate\Http\Request $request The current HTTP Request
      */
     public function __construct(Request $request)
     {
