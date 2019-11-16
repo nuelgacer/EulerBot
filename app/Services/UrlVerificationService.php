@@ -18,6 +18,11 @@ class UrlVerificationService extends AuthenticateSlack implements AuthenticateSl
      */
     protected $request;
 
+    /**
+     * Authenticate URL verification request from Slack API
+     * 
+     * @return boolean Returns TRUE if the request is valid
+     */
     public function auth()
     {
         // Get the challenge data

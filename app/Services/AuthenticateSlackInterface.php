@@ -10,5 +10,8 @@ namespace App\Services;
 
 interface AuthenticateSlackInterface
 {
+    /**
+     * Verify requests
+     */
     public function auth();
 }

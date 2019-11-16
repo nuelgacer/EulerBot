@@ -26,10 +26,6 @@ class BotMiddleware
      */
     public function handle($request, Closure $next)
     {
-        // Debug Slack API request
-        Log::info('Body: '.file_get_contents("php://input"));
-        Log::info('X-Slack-Signature: ' . $request->header('X-Slack-Signature', FALSE));
-        Log::info('X-Slack-Request-Timestamp: ' . $request->header('X-Slack-Request-Timestamp', FALSE));
         try {
             // Get the type of request
             $type = $request->input('type', FALSE);

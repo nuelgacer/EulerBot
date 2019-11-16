@@ -18,6 +18,7 @@ abstract class AuthenticateSlack
      * Injects the current request to authentication clas
      * 
      * @param \Illuminate\Http\Request $request The current HTTP Request
+     * @return void
      */
     public function __construct(Request $request)
     {

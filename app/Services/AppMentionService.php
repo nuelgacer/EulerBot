@@ -5,7 +5,7 @@ namespace App\Services;
 /**
  * class AppMentionService
  * 
- * Verify a Slack API request
+ * Verify a request if it is a valid Slack API request
  * 
  * @author Emmanuel Gacer <emmanuelqgacer@gmail.com>
  */
@@ -17,7 +17,12 @@ class AppMentionService extends AuthenticateSlack implements AuthenticateSlackIn
      * @var \Illuminate\Http\Request
      */
     protected $request;
-    
+
+    /**
+     * Verify the request from Slack API
+     * 
+     * @return boolean Returns TRUE if the request is verified
+     */
     public function auth()
     {
         // Get the slack signature to be compared against

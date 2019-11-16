@@ -7,7 +7,9 @@ use Closure;
 use App\Events\MessageEvent;
 
 /**
- * Middleware to evelope response
+ * class ViewMiddleware
+ * 
+ * Middleware to evelope response and send to trigger events
  * 
  * @author Emmanuel Gacer <emmanuelqgacer@gmail.com>
  */
@@ -36,18 +38,17 @@ class ViewMiddleware
         $content = [
             // Get the returned content
             'text' => $response->getContent(),
+            // Get the channel
             'channel' => $request->input('event.channel', null)
         ];
         
-        $authorizationBearer = 'Bearer ' . getenv('BOT_TOKEN');
-        
-        // Fire the event to send message to Slack API
+        // Fire the event to send the message to Slack API
         event(new MessageEvent([
-            // Set the content
+            // Set the response body
             'body' => json_encode($content),
-            // Set the headers
+            // Set the response headers
             'headers' => [
-                'Authorization' => $authorizationBearer,
+                'Authorization' => 'Bearer ' . getenv('BOT_TOKEN'),
                 'Content-Type' => 'application/json'
             ]
         ]));
