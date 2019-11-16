@@ -17,16 +17,21 @@ class AppController extends Controller
     public function index(\Illuminate\Http\Request $request)
     {
         try {
-            $number = $request->input('text', null);
+            $auth_users = $request->input('authed_users', []);
+            $text = trim($request->input('event.text', null));
+            foreach($auth_users as $user) {
+                $user = "<@{$user}>";
+                $text = str_replace($user, '', $text);
+            }
 
-            if(!is_numeric($number)) {
+            if(!is_numeric($text)) {
                 throw new \Exception('Please provide a valid number 0 < X < 10000');
             }
             // Do more validation
 
             // Perform Project Euler Problem 1
             $sum = 0;
-            $i = +$number;
+            $i = +$text;
 
             // Loop through the number until it reaches zero
             while($i > 0) {
@@ -37,7 +42,7 @@ class AppController extends Controller
                 }
             }
 
-            return sprintf("The sum of all multiples of 3 and 5 below %s is %s.", $number, $sum);
+            return sprintf("The sum of all multiples of 3 and 5 below %s is %s.", $text, $sum);
         }
         catch(\Exception $e) {
             return $e->getMessage();

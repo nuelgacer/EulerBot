@@ -36,7 +36,7 @@ class ViewMiddleware
             // Do some enveloping to match the requirements of Slack API
             ->setContent([
                 'text' => $content,
-                'channel' => $request->input('channel', null)
+                'channel' => $request->input('event.channel', null)
             ])
             // Set the headers
             ->header('Authorization', 'Bearer ' . getenv('BOT_TOKEN'));

@@ -32,6 +32,9 @@ class BotMiddleware
         try {
             // Get the type of request
             $type = $request->input('type', FALSE);
+            if($type === 'event_callback') {
+                $type = $request->input('event.type', FALSE);
+            }
             // Make sure type has value
             if($type === FALSE) {
                 throw new AuthSlackException('Invalid Request');
