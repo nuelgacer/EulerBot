@@ -27,6 +27,10 @@ class MessageListener
     public function handle(MessageEvent $event)
     {
         $response = $event->getResponse();
+
+        $client = new \GuzzleHttp\Client();
+        
+        $client->request('POST', 'https://slack.com/api/chat.postMessage', $response);
         
         // var_dump($response);
     }

@@ -39,11 +39,13 @@ class ViewMiddleware
         ];
         Log::info('App: '.$response->getContent());
         
+        $authorizationBearer = 'Bearer ' . getenv('BOT_TOKEN');
         
         event(new MessageEvent([
-            'content' => $content,
+            'body' => json_encode($content),
             'headers' => [
-                'Authorization' => 'Bearer ' . getenv('BOT_TOKEN')
+                'Authorization' => $authorizationBearer,
+                'Content-Type' => 'application/json'
             ]
         ]));
         
@@ -51,6 +53,6 @@ class ViewMiddleware
             // Do some enveloping to match the requirements of Slack API
             ->setContent($content)
             // Set the headers
-            ->header('Authorization', 'Bearer ' . getenv('BOT_TOKEN'));
+            ->header('Authorization', $authorizationBearer);
     }
 }
