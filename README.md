@@ -2,7 +2,7 @@
 
 A Bot Slack App that answers to the Multiples of 3 and 5 Euler problem (see projecteuler.net, problem 1). When the user sends a message to the bot with a natural number X (where 0 < X < 10000), the Slack Bot will answer with the sum of all multiples of 3 and 5 below X.
 
-Use the Bot App by mentioning its name to followed by the number. For example, the name of the Bot is Euler:
+Use the Bot App by mentioning its name followed by the number. For example, if the name of the Bot is Euler, then
 ```
 @Euler 10
 ```
@@ -12,7 +12,7 @@ Use the Bot App by mentioning its name to followed by the number. For example, t
 Install the following requirements:
 
 * [Docker](https://www.docker.com/) - For development and deployment
-* [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) - For deployment (container)
+* [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) - For deployment
 * [Git](https://git-scm.com/) - Version Control and deployment
 
 Setup an account for the following:
@@ -59,7 +59,8 @@ app-name.herokuapp.com
 Then only subscribe to bot events and look for `app_mention`. There will be no other subsription.
 
 From slack bot Basic Information page, copy the `Signing Secret`. This will be used to verify requests from Slack API.
-From slack bot Install App page, copy the `Bot User OAuth Access Token`. This will be used as a Authentication token when sending request to Slack API.
+
+From slack bot Install App page, copy the `Bot User OAuth Access Token`. This will be used as an Authentication token when sending messages to Slack API.
 
 ### Prepare Config Vars to Heroku
 

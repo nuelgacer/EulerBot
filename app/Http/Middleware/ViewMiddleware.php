@@ -49,11 +49,13 @@ class ViewMiddleware
             // Set the response headers
             'headers' => [
                 'Authorization' => 'Bearer ' . getenv('BOT_TOKEN'),
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
+                'X-Slack-No-Retry' => 1
             ]
         ]));
         
         // Send 200 response
-        return response('', 200);
+        return response('', 200)
+            ->header('X-Slack-No-Retry', 1);
     }
 }
